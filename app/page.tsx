@@ -8,6 +8,7 @@ export default function Home() {
   const [name, setName] = useState("");
   const [result, setResult] = useState<"yes" | "no" | null>(null);
   const [showResult, setShowResult] = useState(false);
+  const [isRName, setIsRName] = useState(false);
 
   const determineGolfSkill = (firstName: string): "yes" | "no" => {
     if (!firstName) return "no";
@@ -42,6 +43,10 @@ export default function Home() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!name.trim()) return;
+
+    const firstLetter = name.trim()[0].toUpperCase();
+    const isR = firstLetter === "R";
+    setIsRName(isR);
 
     const golfResult = determineGolfSkill(name);
     setResult(golfResult);
@@ -81,6 +86,7 @@ export default function Home() {
     setName("");
     setResult(null);
     setShowResult(false);
+    setIsRName(false);
   };
 
   return (
@@ -236,7 +242,7 @@ export default function Home() {
                     animate={{ rotate: [0, -10, 10, -10, 10, 0] }}
                     transition={{ delay: 0.2, duration: 0.5 }}
                   >
-                    <div className="text-9xl mb-6">⛳</div>
+                    <div className="text-9xl mb-6">{isRName ? "💀" : "⛳"}</div>
                   </motion.div>
 
                   <motion.h2
@@ -245,7 +251,7 @@ export default function Home() {
                     transition={{ delay: 0.3 }}
                     className="text-6xl md:text-8xl font-bold text-red-400 mb-6 text-shadow-lg"
                   >
-                    NOT QUITE...
+                    {isRName ? "ABSOLUTELY NOT!" : "NOT QUITE..."}
                   </motion.h2>
 
                   <motion.p
@@ -254,7 +260,9 @@ export default function Home() {
                     transition={{ delay: 0.4 }}
                     className="text-3xl text-white mb-4 text-shadow"
                   >
-                    {name}, golf might not be your calling
+                    {isRName
+                      ? "Nah you're still bad gang"
+                      : `${name}, golf might not be your calling`}
                   </motion.p>
 
                   <motion.p
@@ -263,7 +271,9 @@ export default function Home() {
                     transition={{ delay: 0.5 }}
                     className="text-xl text-green-200/80 mb-8"
                   >
-                    But hey, there&apos;s always mini golf!
+                    {isRName
+                      ? `${name}, you're an embarrassment to the course. Your swing is so terrible, even the ball is ashamed. Maybe try a different sport... or better yet, don't.`
+                      : "But hey, there's always mini golf!"}
                   </motion.p>
 
                   <motion.button
